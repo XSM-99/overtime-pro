@@ -1,10 +1,5 @@
-export {};
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      API_KEY: string;
-      [key: string]: any;
-    }
+declare namespace NodeJS {
+  interface ProcessEnv {
+    API_KEY: string;
   }
 }
