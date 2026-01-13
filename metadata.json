@@ -1,0 +1,8 @@
+{
+  "name": "ShiftMaster Pro",
+  "description": "A professional work hour calculator and PWA designed to track shifts, overtime, and salary with AI-powered assistance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
