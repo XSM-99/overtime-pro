@@ -1,5 +1,7 @@
-// This file augments the global NodeJS namespace to include the API_KEY in process.env.
-// It avoids redeclaring 'process' which causes conflicts with other type definitions.
+// Global declaration for process variable
+// This is necessary because the environment is browser-based (Vite) but we need to satisfy 
+// the @google/genai SDK requirement of using process.env.API_KEY.
+
 export {};
 
 declare global {
