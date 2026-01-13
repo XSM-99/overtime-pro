@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Info, ClipboardList, Clock, Calculator, Wallet, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Info, ClipboardList, Clock, Wallet, CheckCircle2, AlertCircle } from 'lucide-react';
 import { CalculatorInput } from './components/CalculatorInput';
 import { ResultCard } from './components/ResultCard';
 import { ShiftData, CalculationResult } from './types';
