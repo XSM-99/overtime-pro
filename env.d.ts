@@ -1,8 +1,6 @@
-/**
- * Fix for TS2451: Cannot redeclare block-scoped variable 'process'.
- * Instead of declaring 'process' globally which conflicts with @types/node,
- * we augment the NodeJS.ProcessEnv interface to include API_KEY.
- */
+// Augment NodeJS.ProcessEnv to include API_KEY without redeclaring 'process' which causes conflicts.
+// The reference to vite/client is removed as it was reported missing.
+
 declare namespace NodeJS {
   interface ProcessEnv {
     API_KEY: string;
