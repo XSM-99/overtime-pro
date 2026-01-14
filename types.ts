@@ -1,6 +1,6 @@
 export interface ShiftData {
   monthlyRequiredDays: number;
-  monthlyBasicHours: number; // Changed back to manual input
+  monthlyBasicHours: number;
   normalWorkDays: number;
   overnightWorkDays: number;
   compLeaveDays: number;
@@ -24,17 +24,4 @@ export interface CalculationResult {
   currentOvertimePay: number;
   gapToTargetAmount: number;
   progressPercentage: number;
-}
-
-export enum MessageRole {
-  USER = 'user',
-  MODEL = 'model',
-  SYSTEM = 'system'
-}
-
-export interface ChatMessage {
-  id: string;
-  role: MessageRole;
-  text: string;
-  isThinking?: boolean;
 }

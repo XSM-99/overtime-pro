@@ -1,9 +1,11 @@
-// Augment NodeJS.ProcessEnv to include API_KEY without redeclaring 'process' which causes conflicts.
-// The reference to vite/client is removed as it was reported missing.
+// 宣告全域 process 變數，解決 TypeScript 找不到 process 的錯誤
+export {};
 
-declare namespace NodeJS {
-  interface ProcessEnv {
-    API_KEY: string;
-    [key: string]: any;
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      API_KEY: string;
+      [key: string]: any;
+    }
   }
 }
