@@ -54,9 +54,9 @@
         -webkit-user-select: text;
       }
       
-      /* 標題再次下移：確保完美避開動態島/瀏海 */
-      .pt-safe-area-extreme { 
-        padding-top: calc(env(safe-area-inset-top) + 5.5rem); 
+      /* 優化後的安全區域：縮減間距，剛好避開瀏海且位置更自然 */
+      .pt-safe-area-optimal { 
+        padding-top: calc(env(safe-area-inset-top) + 1.5rem); 
       }
     </style>
   <script type="importmap">
