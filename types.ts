@@ -4,6 +4,7 @@ export interface ShiftData {
   normalWorkDays: number;
   overnightWorkDays: number;
   compLeaveDays: number;
+  personalLeaveDays: number; // 新增：特休天數
   extraLeaveDays: number;
   targetOvertimeAmount: number;
   hourlyWage: number;
@@ -11,6 +12,8 @@ export interface ShiftData {
   hoursPerNormalDay: number;
   hoursPerOvernightDay: number;
   hoursPerCompDay: number;
+  hoursPerPersonalLeaveDay: number; // 新增：特休折算工時
+  hoursPerExtraLeaveDay: number;    // 新增：加休折算工時
 }
 
 export interface CalculationResult {

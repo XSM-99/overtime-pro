@@ -11,12 +11,15 @@ const INITIAL_DATA: ShiftData = {
   normalWorkDays: 11,
   overnightWorkDays: 0,
   compLeaveDays: 0,
+  personalLeaveDays: 0, // 預設 0 天
   extraLeaveDays: 3,
   targetOvertimeAmount: 19000,
   hourlyWage: 182,
   hoursPerNormalDay: 20,
   hoursPerOvernightDay: 12,
   hoursPerCompDay: 12,
+  hoursPerPersonalLeaveDay: 8, // 預設特休 8H
+  hoursPerExtraLeaveDay: 0,    // 預設加休 0H
 };
 
 const App: React.FC = () => {
@@ -32,19 +35,22 @@ const App: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
-    const totalNormalHours = data.normalWorkDays * data.hoursPerNormalDay;
-    const totalOvernightHours = data.overnightWorkDays * data.hoursPerOvernightDay;
-    const totalCompHours = data.compLeaveDays * data.hoursPerCompDay;
+    const totalNormalHours = (data.normalWorkDays || 0) * (data.hoursPerNormalDay || 0);
+    const totalOvernightHours = (data.overnightWorkDays || 0) * (data.hoursPerOvernightDay || 0);
+    const totalCompHours = (data.compLeaveDays || 0) * (data.hoursPerCompDay || 0);
+    const totalPersonalHours = (data.personalLeaveDays || 0) * (data.hoursPerPersonalLeaveDay || 0);
+    const totalExtraHours = (data.extraLeaveDays || 0) * (data.hoursPerExtraLeaveDay || 0);
     
-    const totalWorkHours = totalNormalHours + totalOvernightHours + totalCompHours;
-    const totalWorkDays = data.normalWorkDays + data.overnightWorkDays + data.compLeaveDays + data.extraLeaveDays;
-    const reportableOvertimeHours = Math.max(0, totalWorkHours - data.monthlyBasicHours);
-    const currentOvertimePay = reportableOvertimeHours * data.hourlyWage;
-    const requiredHoursForTarget = Math.ceil(data.targetOvertimeAmount / data.hourlyWage);
+    const totalWorkHours = totalNormalHours + totalOvernightHours + totalCompHours + totalPersonalHours + totalExtraHours;
+    const totalWorkDays = (data.normalWorkDays || 0) + (data.overnightWorkDays || 0) + (data.compLeaveDays || 0) + (data.personalLeaveDays || 0) + (data.extraLeaveDays || 0);
+    
+    const reportableOvertimeHours = Math.max(0, totalWorkHours - (data.monthlyBasicHours || 0));
+    const currentOvertimePay = reportableOvertimeHours * (data.hourlyWage || 0);
+    const requiredHoursForTarget = Math.ceil((data.targetOvertimeAmount || 0) / (data.hourlyWage || 1));
     const isTargetMet = reportableOvertimeHours >= requiredHoursForTarget;
     const remainingSaveableHours = Math.max(0, reportableOvertimeHours - requiredHoursForTarget);
-    const gapToTargetAmount = Math.max(0, data.targetOvertimeAmount - currentOvertimePay);
-    const progressPercentage = Math.min(100, Math.max(0, (currentOvertimePay / data.targetOvertimeAmount) * 100));
+    const gapToTargetAmount = Math.max(0, (data.targetOvertimeAmount || 0) - currentOvertimePay);
+    const progressPercentage = Math.min(100, Math.max(0, (currentOvertimePay / (data.targetOvertimeAmount || 1)) * 100));
 
     setResults({
       totalWorkDays,
@@ -63,12 +69,12 @@ const App: React.FC = () => {
     setData(prev => ({ ...prev, [key]: value }));
   };
 
-  const currentTotalDays = data.normalWorkDays + data.overnightWorkDays + data.compLeaveDays + data.extraLeaveDays;
-  const isDaysInsufficient = currentTotalDays < data.monthlyRequiredDays;
+  const currentTotalDays = (data.normalWorkDays || 0) + (data.overnightWorkDays || 0) + (data.compLeaveDays || 0) + (data.personalLeaveDays || 0) + (data.extraLeaveDays || 0);
+  const isDaysInsufficient = currentTotalDays < (data.monthlyRequiredDays || 0);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-indigo-100">
-      {/* 標題區域：恢復上一動 pt-safe-area-optimal */}
+      {/* 標題區域 */}
       <header className="pt-safe-area-optimal pb-6 px-6 text-center">
         <h1 className="text-3xl font-black tracking-tight text-slate-900">超勤試算表</h1>
       </header>
@@ -122,8 +128,33 @@ const App: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-50 pt-3 pl-2">
+                  <span className="text-xs font-medium text-slate-500">特休</span>
+                  <div className="flex items-center bg-amber-50 text-amber-600 px-2 py-0.5 rounded-md">
+                    <span className="text-sm font-bold">+</span>
+                    <input 
+                      type="number" 
+                      value={data.hoursPerPersonalLeaveDay}
+                      onChange={(e) => handleInputChange('hoursPerPersonalLeaveDay', Number(e.target.value))}
+                      className="w-7 text-center text-sm font-bold bg-transparent outline-none no-spinner text-amber-600"
+                    />
+                    <span className="text-sm font-bold">H</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-50 pt-3 pr-2 border-r border-slate-100">
                   <span className="text-xs font-medium text-slate-500">加休</span>
-                  <span className="text-sm font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">+0H</span>
+                  <div className="flex items-center bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
+                    <span className="text-sm font-bold">+</span>
+                    <input 
+                      type="number" 
+                      value={data.hoursPerExtraLeaveDay}
+                      onChange={(e) => handleInputChange('hoursPerExtraLeaveDay', Number(e.target.value))}
+                      className="w-7 text-center text-sm font-bold bg-transparent outline-none no-spinner text-slate-600"
+                    />
+                    <span className="text-sm font-bold">H</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-50 pt-3 pl-2">
+                   <span className="text-[10px] text-slate-300">更多規則...</span>
                 </div>
             </div>
             <div className="px-5 py-2 bg-slate-50 border-t border-slate-100 text-center">
@@ -134,11 +165,11 @@ const App: React.FC = () => {
         {/* Basic Settings */}
         <section className="space-y-3">
           <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider px-1 flex items-center gap-2">
-            <Info size={14} /> 基本參數設定
+            <Info size={14} /> 基本參數設定 (自行輸入)
           </h2>
           <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 grid grid-cols-2 gap-4">
             <CalculatorInput label="應上班天數" value={data.monthlyRequiredDays} onChange={(v) => handleInputChange('monthlyRequiredDays', v)} highlight />
-            <CalculatorInput label="基本工時(H)" value={data.monthlyBasicHours} onChange={(v) => handleInputChange('monthlyBasicHours', v)} highlight />
+            <CalculatorInput label="每月勞工應上班時數" value={data.monthlyBasicHours} onChange={(v) => handleInputChange('monthlyBasicHours', v)} highlight />
             <CalculatorInput label="時薪 ($)" value={data.hourlyWage} onChange={(v) => handleInputChange('hourlyWage', v)} />
             <CalculatorInput label="超勤目標 ($)" value={data.targetOvertimeAmount} onChange={(v) => handleInputChange('targetOvertimeAmount', v)} />
           </div>
@@ -152,15 +183,22 @@ const App: React.FC = () => {
              </h2>
              <div className={`text-xs px-2 py-1 rounded-md font-bold flex items-center gap-1.5 ${isDaysInsufficient ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
                 {isDaysInsufficient ? <AlertCircle size={12} /> : <CheckCircle2 size={12} />}
-                <span>{currentTotalDays} 天</span>
+                <span>目前已填 {currentTotalDays} 天</span>
              </div>
           </div>
           
-          <div className={`bg-white p-5 rounded-2xl shadow-sm border transition-all grid grid-cols-2 gap-4 ${isDaysInsufficient ? 'border-red-200 shadow-red-50' : 'border-slate-100'}`}>
-             <CalculatorInput label="正常上班" value={data.normalWorkDays} onChange={(v) => handleInputChange('normalWorkDays', v)} />
-             <CalculatorInput label="外宿上班" value={data.overnightWorkDays} onChange={(v) => handleInputChange('overnightWorkDays', v)} />
-             <CalculatorInput label="補休天數" value={data.compLeaveDays} onChange={(v) => handleInputChange('compLeaveDays', v)} />
-             <CalculatorInput label="加休天數" value={data.extraLeaveDays} onChange={(v) => handleInputChange('extraLeaveDays', v)} />
+          <div className={`bg-white p-5 rounded-2xl shadow-sm border transition-all space-y-4 ${isDaysInsufficient ? 'border-red-200 shadow-red-50' : 'border-slate-100'}`}>
+             {/* 第一列：上班班別 */}
+             <div className="grid grid-cols-2 gap-4">
+                <CalculatorInput label="正常上班" value={data.normalWorkDays} onChange={(v) => handleInputChange('normalWorkDays', v)} />
+                <CalculatorInput label="外宿上班" value={data.overnightWorkDays} onChange={(v) => handleInputChange('overnightWorkDays', v)} />
+             </div>
+             {/* 第二列：假別 (三者在同一行) */}
+             <div className="grid grid-cols-3 gap-3">
+                <CalculatorInput label="補休天數" value={data.compLeaveDays} onChange={(v) => handleInputChange('compLeaveDays', v)} />
+                <CalculatorInput label="特休天數" value={data.personalLeaveDays} onChange={(v) => handleInputChange('personalLeaveDays', v)} />
+                <CalculatorInput label="加休天數" value={data.extraLeaveDays} onChange={(v) => handleInputChange('extraLeaveDays', v)} />
+             </div>
           </div>
         </section>
 
