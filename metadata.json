@@ -1,5 +1,5 @@
 {
   "name": "ShiftMaster Pro",
-  "description": "A professional work hour calculator and PWA designed to track shifts, overtime, and salary.",
+  "description": "專業超勤加班費試算工具，專為需輪班之公務人員設計。",
   "requestFramePermissions": []
 }

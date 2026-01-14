@@ -7,52 +7,45 @@ import { ShiftData, CalculationResult } from './types';
 // Initial State
 const INITIAL_DATA: ShiftData = {
   monthlyRequiredDays: 22,
-  monthlyBasicHours: 176, // Default ~22 * 8
+  monthlyBasicHours: 176,
   normalWorkDays: 11,
   overnightWorkDays: 0,
   compLeaveDays: 0,
   extraLeaveDays: 3,
   targetOvertimeAmount: 19000,
   hourlyWage: 182,
-  // Default Rule Configuration
   hoursPerNormalDay: 20,
   hoursPerOvernightDay: 12,
   hoursPerCompDay: 12,
 };
 
 const App: React.FC = () => {
-  const [data, setData] = useState<ShiftData>(INITIAL_DATA);
+  // 從 localStorage 讀取資料或使用預設值
+  const [data, setData] = useState<ShiftData>(() => {
+    const saved = localStorage.getItem('shiftMasterData');
+    return saved ? JSON.parse(saved) : INITIAL_DATA;
+  });
+  
   const [results, setResults] = useState<CalculationResult | null>(null);
+
+  // 當資料變動時，自動存入 localStorage
+  useEffect(() => {
+    localStorage.setItem('shiftMasterData', JSON.stringify(data));
+  }, [data]);
 
   // Calculation Effect
   useEffect(() => {
-    // Use dynamic hours from state
     const totalNormalHours = data.normalWorkDays * data.hoursPerNormalDay;
     const totalOvernightHours = data.overnightWorkDays * data.hoursPerOvernightDay;
     const totalCompHours = data.compLeaveDays * data.hoursPerCompDay;
     
-    // Total Work Hours
     const totalWorkHours = totalNormalHours + totalOvernightHours + totalCompHours;
-    
-    // Total Actual Work Days (for reference)
     const totalWorkDays = data.normalWorkDays + data.overnightWorkDays + data.compLeaveDays + data.extraLeaveDays;
-
-    // Reportable Overtime (Total - Manual Basic Hours Input)
     const reportableOvertimeHours = Math.max(0, totalWorkHours - data.monthlyBasicHours);
-
-    // Current Overtime Pay
     const currentOvertimePay = reportableOvertimeHours * data.hourlyWage;
-
-    // Required Hours for Target
     const requiredHoursForTarget = Math.ceil(data.targetOvertimeAmount / data.hourlyWage);
-
-    // Is Target Met?
     const isTargetMet = reportableOvertimeHours >= requiredHoursForTarget;
-
-    // Remaining (for saving)
     const remainingSaveableHours = Math.max(0, reportableOvertimeHours - requiredHoursForTarget);
-
-    // Progress Metrics
     const gapToTargetAmount = Math.max(0, data.targetOvertimeAmount - currentOvertimePay);
     const progressPercentage = Math.min(100, Math.max(0, (currentOvertimePay / data.targetOvertimeAmount) * 100));
 
@@ -73,23 +66,20 @@ const App: React.FC = () => {
     setData(prev => ({ ...prev, [key]: value }));
   };
 
-  // Calculate current total days for display immediately
   const currentTotalDays = data.normalWorkDays + data.overnightWorkDays + data.compLeaveDays + data.extraLeaveDays;
   const isDaysInsufficient = currentTotalDays < data.monthlyRequiredDays;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-indigo-100">
-      {/* Harmonious Header - No Logo */}
       <header className="pt-8 pb-4 px-6">
         <div className="max-w-lg mx-auto text-center">
             <h1 className="text-2xl font-black tracking-tight text-slate-800 leading-none">超勤試算表</h1>
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="p-5 max-w-lg mx-auto w-full space-y-6 pb-12">
         
-        {/* Rules Dashboard Widget - Editable */}
+        {/* Rules Dashboard Widget */}
         <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
             <div className="bg-gradient-to-r from-slate-50 to-white px-5 py-3 border-b border-slate-100 flex items-center gap-2">
                 <ClipboardList size={16} className="text-indigo-600" />
@@ -104,10 +94,6 @@ const App: React.FC = () => {
                       type="number" 
                       value={data.hoursPerNormalDay}
                       onChange={(e) => handleInputChange('hoursPerNormalDay', Number(e.target.value))}
-                      onWheel={(e) => e.currentTarget.blur()}
-                      onKeyDown={(e) => {
-                        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-                      }}
                       className="w-7 text-center text-sm font-bold bg-transparent outline-none no-spinner text-emerald-600"
                     />
                     <span className="text-sm font-bold">H</span>
@@ -121,10 +107,6 @@ const App: React.FC = () => {
                       type="number" 
                       value={data.hoursPerOvernightDay}
                       onChange={(e) => handleInputChange('hoursPerOvernightDay', Number(e.target.value))}
-                      onWheel={(e) => e.currentTarget.blur()}
-                      onKeyDown={(e) => {
-                        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-                      }}
                       className="w-7 text-center text-sm font-bold bg-transparent outline-none no-spinner text-indigo-600"
                     />
                     <span className="text-sm font-bold">H</span>
@@ -138,10 +120,6 @@ const App: React.FC = () => {
                       type="number" 
                       value={data.hoursPerCompDay}
                       onChange={(e) => handleInputChange('hoursPerCompDay', Number(e.target.value))}
-                      onWheel={(e) => e.currentTarget.blur()}
-                      onKeyDown={(e) => {
-                        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-                      }}
                       className="w-7 text-center text-sm font-bold bg-transparent outline-none no-spinner text-indigo-600"
                     />
                     <span className="text-sm font-bold">H</span>
@@ -201,26 +179,10 @@ const App: React.FC = () => {
           </div>
           
           <div className={`bg-white p-5 rounded-2xl shadow-sm border transition-colors duration-300 grid grid-cols-2 gap-4 ${isDaysInsufficient ? 'border-red-200 shadow-red-50' : 'border-slate-100'}`}>
-             <CalculatorInput 
-              label="正常上班 (天)" 
-              value={data.normalWorkDays} 
-              onChange={(v) => handleInputChange('normalWorkDays', v)} 
-            />
-             <CalculatorInput 
-              label="外宿上班 (天)" 
-              value={data.overnightWorkDays} 
-              onChange={(v) => handleInputChange('overnightWorkDays', v)} 
-            />
-             <CalculatorInput 
-              label="補休 (天)" 
-              value={data.compLeaveDays} 
-              onChange={(v) => handleInputChange('compLeaveDays', v)} 
-            />
-             <CalculatorInput 
-              label="加休 (天)" 
-              value={data.extraLeaveDays} 
-              onChange={(v) => handleInputChange('extraLeaveDays', v)} 
-            />
+             <CalculatorInput label="正常上班 (天)" value={data.normalWorkDays} onChange={(v) => handleInputChange('normalWorkDays', v)} />
+             <CalculatorInput label="外宿上班 (天)" value={data.overnightWorkDays} onChange={(v) => handleInputChange('overnightWorkDays', v)} />
+             <CalculatorInput label="補休 (天)" value={data.compLeaveDays} onChange={(v) => handleInputChange('compLeaveDays', v)} />
+             <CalculatorInput label="加休 (天)" value={data.extraLeaveDays} onChange={(v) => handleInputChange('extraLeaveDays', v)} />
              {isDaysInsufficient && (
                  <div className="col-span-2 text-xs text-red-500 font-medium flex items-center gap-1 mt-1 justify-end">
                      * 總天數小於每月需上班天數 ({data.monthlyRequiredDays}天)
@@ -295,7 +257,6 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Progress Bar for Not Met */}
                 {!results.isTargetMet && (
                     <div className="mt-1">
                         <div className="w-full bg-amber-200/50 rounded-full h-2.5 overflow-hidden">
