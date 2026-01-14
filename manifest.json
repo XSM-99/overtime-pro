@@ -1,6 +1,6 @@
 {
-  "name": "ShiftMaster Pro 超勤試算",
-  "short_name": "ShiftMaster",
+  "name": "超勤試算表",
+  "short_name": "超勤試算",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
@@ -8,15 +8,15 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "type": "image/png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzYzNjZmMSIvPjxwYXRoIGQ9Ik01OCA3MkgxMzRWMTE4QzEzNCAxMjIuNDE4IDEzMC40MTggMTI2IDEyNiAxMjZINTZINTIuNDY0OEM1MC44ODMxIDEyNiA0OS44NTc0IDEyNC4zMTEgNTAuNTY4NyAxMjIuODk0TDU4IDcyWiIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHBhdGggZD0iTTYwIDY0SDEzMkMxMzYuNDE4IDY0IDE0MCA2Ny41ODE0IDE0MCA3MlY4MEMxNDAgODQuNDE4NiAxMzYuNDE4IDg4IDEzMiA4OEg2MEM1NS41ODE0IDg4IDUyIDg0LjQxODYgNTIgODBWNzJDNTIgNjcuNTgxNCA1NS41ODE0IDY0IDYwIDY0WiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNNjAgODhIMTMyQzEzNi40MTggODggMTQwIDkxLjU4MTQgMTQwIDk2VjExMkMxNDAgMTE2LjQxOCAxMzYuNDE4IDg4IDEzMiA4OEg2MEM1NS41ODE0IDg4IDUyIDg0LjQxODYgNTIgODBWNzJDNTIgNjcuNTgxNCA1NS41ODE0IDY0IDYwIDY0WiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=",
       "sizes": "192x192",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
-      "type": "image/png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMDAiIGZpbGw9IiM2MzY2ZjEiLz48cGF0aCBkPSJNMTU0LjY2NyAxOTJIMzU3LjMzM1YzMTQuNjY3QzM1Ny4zMzMgMzI2LjQ0NyAzNDcuNzgxIDMzNiAzMzUuOTk5IDMzNkgxNDkuMzMzSDEzOS45MDVjLTQuMTc5IDAtNy42NzMtMy4wNzEtOC4yNjUtNy4xOTJMMTU0LjY2NyAxOTJaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cGF0aCBkPSJNMTYwIDE3MEgzNTJDMzYzLjc4MSAxNzAgMzcyIDE3OC4yMTkgMzcyIDE4OFYyMTBDMzcyIDIxOS43ODEgMzYzLjc4MSAyMjggMzUyIDIyOEgxNjBDMTQ4LjIxOSAyMjggMTQwIDIxOS43ODEgMTQwIDIxMFYxODhDMTQwIDE3OC4yMTkgMTQ4LjIxOSAxNzAgMTYwIDE3MFoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTE2MCAyMjhIMzUyQzM2My43ODEgMjI4IDM3MiAyMzYuMjE5IDM3MiAyNDZWMTg4QzM3MiAxNzguMjE5IDM2My43ODEgMTcwIDM1MiAxNzBIMTYwQzE0OC4yMTkgMTcwIDE0MCAxNzguMjE5IDE0MCAxODhWMjQ2QzE0MCAyMzYuMjE5IDE0OC4yMTkgMjI4IDE2MCAyMjhaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==",
       "sizes": "512x512",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]

@@ -68,7 +68,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-indigo-100">
-      {/* 標題區域：套用 pt-safe-area-optimal，縮減上方間距，同時維持無 LOGO 設計 */}
+      {/* 標題區域：恢復上一動 pt-safe-area-optimal */}
       <header className="pt-safe-area-optimal pb-6 px-6 text-center">
         <h1 className="text-3xl font-black tracking-tight text-slate-900">超勤試算表</h1>
       </header>

@@ -6,15 +6,14 @@
     <meta name="theme-color" content="#f8fafc" />
     <meta name="description" content="專業超勤加班費試算工具">
     
-    <!-- PWA 安裝於桌面時的名稱 -->
     <title>超勤試算表</title>
     <meta name="apple-mobile-web-app-title" content="超勤試算">
     
-    <!-- PWA Manifest (控制桌面 LOGO) -->
+    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     
-    <!-- iOS 圖示支援 -->
-    <link rel="apple-touch-icon" href="/icon-192.png">
+    <!-- iOS 桌面 LOGO 處理 (使用內嵌 SVG Data URI) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzYzNjZmMSIvPjxwYXRoIGQ9Ik01OCA3MkgxMzRWMTE4QzEzNCAxMjIuNDE4IDEzMC40MTggMTI2IDEyNiAxMjZINTZINTIuNDY0OEM1MC44ODMxIDEyNiA0OS44NTc0IDEyNC4zMTEgNTAuNTY4NyAxMjIuODk0TDU4IDcyWiIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHBhdGggZD0iTTYwIDY0SDEzMkMxMzYuNDE4IDY0IDE0MCA2Ny41ODE0IDE0MCA3MlY4MEMxNDAgODQuNDE4NiAxMzYuNDE4IDg4IDEzMiA4OEg2MEM1NS41ODE0IDg4IDUyIDg0LjQxODYgNTIgODBWNzJDNTIgNjcuNTgxNCA1NS41ODE0IDY0IDYwIDY0WiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNNjAgODhIMTMyQzEzNi40MTggODggMTQwIDkxLjU4MTQgMTQwIDk2VjExMkMxNDAgMTE2LjQxOCAxMzYuNDE4IDEyMCAxMzIgMTIwSDYwQzU1LjU4MTQgMTIwIDUyIDExNi40MTggNTIgMTEyVjk2QzUyIDkxLjU4MTQgNTUuNTgxNCA4OCA2MCA4OFoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTk2IDExMkM5OC4yMDg5IDExMiAxMDAgMTEwLjIwOSAxMDAgMTA4QzEwMCAxMDUuNzkxIDk4LjIwODkgMTA0IDk2IDEwNEM5My43OTExIDEwNCA5MiAxMDUuNzkxIDkyIDEwOEM5MiAxMTAuMjA5IDkzLjc5MTEgMTEyIDk2IDExMloiIGZpbGw9IiM2MzY2ZjEiLz48L3N2Zz4=">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
@@ -54,7 +53,7 @@
         -webkit-user-select: text;
       }
       
-      /* 優化後的安全區域：縮減間距，剛好避開瀏海且位置更自然 */
+      /* 標題恢復上一動：使用 1.5rem 的間距 */
       .pt-safe-area-optimal { 
         padding-top: calc(env(safe-area-inset-top) + 1.5rem); 
       }
